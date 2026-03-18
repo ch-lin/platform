@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@WebMvcTest(properties = "cors.allowed-origins=http://localhost:3000")
+@WebMvcTest(properties = "cors.allowed-origin-patterns=http://localhost:3000")
 @ContextConfiguration(classes = {BaseWebConfigTest.TestApplication.class, BaseWebConfigTest.TestController.class})
 @Import(BaseWebConfig.class)
 @AutoConfigureMockMvc(addFilters = false) // Disable security filters to test MVC config in isolation
