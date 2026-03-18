@@ -56,8 +56,8 @@ public class BaseWebConfig implements WebMvcConfigurer {
      * The list of allowed origins for CORS requests, injected from application
      * properties.
      */
-    @Value("${cors.allowed-origins}")
-    private String[] allowedOrigins;
+    @Value("${cors.allowed-origin-patterns}")
+    private String[] allowedOriginPatterns;
 
     /**
      * Configures content negotiation strategies for the application.
@@ -96,7 +96,7 @@ public class BaseWebConfig implements WebMvcConfigurer {
     public void addCorsMappings(@NonNull CorsRegistry registry) {
         logger.info("Configuring CORS");
         registry.addMapping("/**") // Apply to all endpoints
-                .allowedOrigins(Objects.requireNonNull(allowedOrigins)) // Allow configured origins
+                .allowedOriginPatterns(Objects.requireNonNull(allowedOriginPatterns)) // Allow configured origin patterns
                 .allowedMethods(Objects.requireNonNull(ALLOWED_METHODS)) // Specify allowed methods
                 .allowedHeaders("*") // Allow all headers
                 .allowCredentials(true); // Allow credentials (e.g., cookies)
