@@ -78,7 +78,8 @@ public class BaseWebConfig implements WebMvcConfigurer {
                 .useRegisteredExtensionsOnly(false)
                 .defaultContentType(MediaType.APPLICATION_JSON)
                 .mediaType("xml", Objects.requireNonNull(MediaType.APPLICATION_XML))
-                .mediaType("json", Objects.requireNonNull(MediaType.APPLICATION_JSON));
+                .mediaType("json", Objects.requireNonNull(MediaType.APPLICATION_JSON))
+                .mediaType("csv", MediaType.parseMediaType("text/csv"));
     }
 
     /**
