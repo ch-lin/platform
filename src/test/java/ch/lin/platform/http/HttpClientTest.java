@@ -99,7 +99,6 @@ class HttpClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void get_ShouldReturnResponse_WhenSuccess() throws Exception {
         mockResponse(200, "{\"status\":\"ok\"}");
 
@@ -136,12 +135,12 @@ class HttpClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void post_ShouldReturnResponse_WhenSuccess() throws Exception {
         mockResponse(201, "Created");
 
         String jsonBody = "{\"name\":\"test\"}";
-        HttpClient.Response response = httpClient.post("/api/create", null, jsonBody, Map.of("Content-Type", "application/json"));
+        HttpClient.Response response = httpClient.post("/api/create", null, jsonBody,
+                Map.of("Content-Type", "application/json"));
 
         assertThat(response.statusCode()).isEqualTo(201);
         assertThat(response.body()).isEqualTo("Created");
@@ -174,7 +173,6 @@ class HttpClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void post_ShouldReturnResponse_WhenJsonBodyIsNull() throws Exception {
         mockResponse(200, "OK");
 
@@ -192,7 +190,6 @@ class HttpClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void put_ShouldReturnResponse_WhenSuccess() throws Exception {
         mockResponse(200, "Updated");
 
@@ -227,7 +224,6 @@ class HttpClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void put_ShouldReturnResponse_WhenJsonBodyIsNull() throws Exception {
         mockResponse(200, "OK");
 
@@ -245,7 +241,6 @@ class HttpClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void patch_ShouldReturnResponse_WhenSuccess() throws Exception {
         mockResponse(200, "Patched");
 
@@ -280,7 +275,6 @@ class HttpClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void patch_ShouldReturnResponse_WhenJsonBodyIsNull() throws Exception {
         mockResponse(200, "OK");
 
@@ -310,7 +304,6 @@ class HttpClientTest {
         assertThat(response.body()).isEqualTo("OK");
     }
 
-    @SuppressWarnings("unchecked")
     private void mockResponse(int statusCode, String body) throws IOException {
         when(mockApacheClient.execute(any(ClassicHttpRequest.class), any(HttpClientResponseHandler.class)))
                 .thenAnswer(invocation -> {
@@ -320,11 +313,14 @@ class HttpClientTest {
                     // Use StringEntity to allow EntityUtils.toString() to work
                     when(mockResponse.getEntity()).thenReturn(new StringEntity(body));
 
-                    // Simulate the handler behavior (which is implemented as a lambda in HttpClient)
+                    // Simulate the handler behavior (which is implemented as a lambda in
+                    // HttpClient)
                     // The lambda in HttpClient expects the response to be passed to it.
-                    // However, since we can't easily invoke the lambda logic without duplicating it or 
+                    // However, since we can't easily invoke the lambda logic without duplicating it
+                    // or
                     // relying on the implementation detail that the lambda IS the handler,
-                    // we rely on the fact that HttpClient passes a lambda that implements HttpClientResponseHandler.
+                    // we rely on the fact that HttpClient passes a lambda that implements
+                    // HttpClientResponseHandler.
                     // We invoke that handler with our mocked response.
                     return handler.handleResponse(mockResponse);
                 });
