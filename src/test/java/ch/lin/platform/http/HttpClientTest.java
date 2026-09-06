@@ -42,6 +42,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -108,7 +109,7 @@ class HttpClientTest {
         assertThat(response.body()).isEqualTo("{\"status\":\"ok\"}");
 
         ArgumentCaptor<ClassicHttpRequest> captor = ArgumentCaptor.forClass(ClassicHttpRequest.class);
-        verify(mockApacheClient).execute(captor.capture(), any(HttpClientResponseHandler.class));
+        verify(mockApacheClient).execute(captor.capture(), ArgumentMatchers.<HttpClientResponseHandler<?>>any());
         ClassicHttpRequest request = captor.getValue();
 
         assertThat(request).isInstanceOf(HttpGet.class);
@@ -146,7 +147,7 @@ class HttpClientTest {
         assertThat(response.body()).isEqualTo("Created");
 
         ArgumentCaptor<ClassicHttpRequest> captor = ArgumentCaptor.forClass(ClassicHttpRequest.class);
-        verify(mockApacheClient).execute(captor.capture(), any(HttpClientResponseHandler.class));
+        verify(mockApacheClient).execute(captor.capture(), ArgumentMatchers.<HttpClientResponseHandler<?>>any());
         ClassicHttpRequest request = captor.getValue();
 
         assertThat(request).isInstanceOf(HttpPost.class);
@@ -182,7 +183,7 @@ class HttpClientTest {
         assertThat(response.body()).isEqualTo("OK");
 
         ArgumentCaptor<ClassicHttpRequest> captor = ArgumentCaptor.forClass(ClassicHttpRequest.class);
-        verify(mockApacheClient).execute(captor.capture(), any(HttpClientResponseHandler.class));
+        verify(mockApacheClient).execute(captor.capture(), ArgumentMatchers.<HttpClientResponseHandler<?>>any());
         ClassicHttpRequest request = captor.getValue();
 
         assertThat(request).isInstanceOf(HttpPost.class);
@@ -199,7 +200,7 @@ class HttpClientTest {
         assertThat(response.body()).isEqualTo("Updated");
 
         ArgumentCaptor<ClassicHttpRequest> captor = ArgumentCaptor.forClass(ClassicHttpRequest.class);
-        verify(mockApacheClient).execute(captor.capture(), any(HttpClientResponseHandler.class));
+        verify(mockApacheClient).execute(captor.capture(), ArgumentMatchers.<HttpClientResponseHandler<?>>any());
         ClassicHttpRequest request = captor.getValue();
         assertThat(request).isInstanceOf(HttpPut.class);
         assertThat(request.getHeader("X-Custom").getValue()).isEqualTo("val");
@@ -233,7 +234,7 @@ class HttpClientTest {
         assertThat(response.body()).isEqualTo("OK");
 
         ArgumentCaptor<ClassicHttpRequest> captor = ArgumentCaptor.forClass(ClassicHttpRequest.class);
-        verify(mockApacheClient).execute(captor.capture(), any(HttpClientResponseHandler.class));
+        verify(mockApacheClient).execute(captor.capture(), ArgumentMatchers.<HttpClientResponseHandler<?>>any());
         ClassicHttpRequest request = captor.getValue();
 
         assertThat(request).isInstanceOf(HttpPut.class);
@@ -250,7 +251,7 @@ class HttpClientTest {
         assertThat(response.body()).isEqualTo("Patched");
 
         ArgumentCaptor<ClassicHttpRequest> captor = ArgumentCaptor.forClass(ClassicHttpRequest.class);
-        verify(mockApacheClient).execute(captor.capture(), any(HttpClientResponseHandler.class));
+        verify(mockApacheClient).execute(captor.capture(), ArgumentMatchers.<HttpClientResponseHandler<?>>any());
         ClassicHttpRequest request = captor.getValue();
         assertThat(request).isInstanceOf(HttpPatch.class);
         assertThat(request.getHeader("If-Match").getValue()).isEqualTo("123");
@@ -284,7 +285,7 @@ class HttpClientTest {
         assertThat(response.body()).isEqualTo("OK");
 
         ArgumentCaptor<ClassicHttpRequest> captor = ArgumentCaptor.forClass(ClassicHttpRequest.class);
-        verify(mockApacheClient).execute(captor.capture(), any(HttpClientResponseHandler.class));
+        verify(mockApacheClient).execute(captor.capture(), ArgumentMatchers.<HttpClientResponseHandler<?>>any());
         ClassicHttpRequest request = captor.getValue();
 
         assertThat(request).isInstanceOf(HttpPatch.class);
@@ -305,7 +306,7 @@ class HttpClientTest {
     }
 
     private void mockResponse(int statusCode, String body) throws IOException {
-        when(mockApacheClient.execute(any(ClassicHttpRequest.class), any(HttpClientResponseHandler.class)))
+        when(mockApacheClient.execute(any(ClassicHttpRequest.class), ArgumentMatchers.<HttpClientResponseHandler<?>>any()))
                 .thenAnswer(invocation -> {
                     HttpClientResponseHandler<?> handler = invocation.getArgument(1);
                     ClassicHttpResponse mockResponse = mock(ClassicHttpResponse.class);
